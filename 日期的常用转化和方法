@@ -1,0 +1,96 @@
+# 日期的常用转化和方法
+
+## 转化
+
+### String To Date
+
+```swift
+let dateFormatter = DateFormatter()
+dateFormatter.dateFormat = "yyyy-MM-dd"
+dateFormatter.date(from: "2023-01-01")
+
+运行结果：
+Jan 1, 2023 at 12:00 AM
+```
+
+### Date To String
+
+```swift
+let dateFormatter = DateFormatter()
+dateFormatter.dateFormat = "yyy年M月d日"
+dateFormatter.string(from: Date())
+
+运行结果：
+2023年4月10日
+
+let dateFormatter = DateFormatter()
+dateFormatter.dateFormat = "yyy-MM-dd"
+dateFormatter.string(from: Date())
+
+运行结果：
+2023-04-10
+```
+
+## DateComponents 和 dateComponents 用法
+
+```swift
+let components = DateComponents(calendar: .current, timeZone: .current, era: 1, year: 2023, month: 4, day: 2, hour: 15, minute: 30, second: 45, nanosecond: 0, weekday: nil, weekdayOrdinal: nil, quarter: nil, weekOfMonth: nil, weekOfYear: nil, yearForWeekOfYear: nil)
+
+let year = components.year      // 2023
+let month = components.month    // 4
+let day = components.day        // 2
+let hour = components.hour      // 15
+let minute = components.minute  // 30
+let second = components.second  // 45
+```
+
+### 获取当前年月
+
+```swift
+
+let calendar = Calendar.current
+let date = Date()
+let yearAndMonth = calendar.dateComponents([.year, .month], from: date)
+
+//获取当前年份的第一天
+func firstDayOfYear() -> Date {
+				let year = yearAndMonth.year
+        DateComponents(calendar:Calendar.current, year: year).date
+    }
+//这个方法也可以获取当前年份的第一天
+func startOfMonth() -> Date {
+   return calendar.date(from: calendar.dateComponents([.year, .month], from: calendar.startOfDay(for: self)))!
+}
+
+运行结果：
+Jan 1, 2023 at 12:00 AM
+
+//获取当前月份的第一天
+func firstDayOfYear() -> Date {
+				let year = yearAndMonth.year
+				let month = yearAndMonth.month
+        DateComponents(calendar:Calendar.current, year: year,month: month).date
+    }
+运行结果：
+Apr 1, 2023 at 12:00 AM
+```
+
+### 计算某一天是星期几
+
+```swift
+func dayOfWeek() -> String {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: self)
+        
+        switch weekday {
+            case 1: return "星期日"
+            case 2: return "星期一"
+            case 3: return "星期二"
+            case 4: return "星期三"
+            case 5: return "星期四"
+            case 6: return "星期五"
+            case 7: return "星期六"
+            default: return "未知"
+        }
+    }
+```
